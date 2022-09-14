@@ -9,8 +9,9 @@ con = sqlite3.connect('resaleFlat.db')
 cur = con.cursor()
 try:
     if sys.argv[1] == 'drop':
-        # cur.execute("DROP TABLE IF EXIST resaleFlat")
+        cur.execute("DROP TABLE IF EXIST resaleFlat")
 
+    elif sys.argv[1] == 'newtable':
         #create table if doesnt exist
         cur.execute(""" CREATE TABLE IF NOT EXISTS resaleFlat(
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,10 +41,10 @@ try:
 
         # df['month'] = pd.to_datetime(df['month'].dt.date)
         # send df to sqlite
-        df.to_sql('resaleFlat', con, if_exists='replace', index=False)
+        df.to_sql('resaleFlat', con, if_exists='replace')
     
 except:
-    df = pd.read_sql("SELECT * FROM resaleFlat", con)
-    print(df.head())
-
+    # df = pd.read_sql("SELECT * FROM resaleFlat", con)
+    # print(df.head())
+    print("Invalid output. Use drop/newtable")
 con.close()
