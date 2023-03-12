@@ -1,0 +1,338 @@
+from msilib.schema import tables
+from turtle import title
+from flask import Flask, render_template
+import pandas as pd
+import json
+import plotly
+import plotly.figure_factory as ff
+import plotly.express as px
+import numpy as np
+import plotly.graph_objects as go
+import os
+import csv
+from newdf import newDf
+#from pathlib import Path
+
+app = Flask(__name__)
+
+@app.route('/')
+
+def notdash():
+   ################     Graph 1     ################
+   #excelPath = os.path.join(os.getcwd(), "/resaleflatpricelonglat.xlsx" )
+   df123 = pd.read_excel(os.getcwd() + "/datasets" + "/resaleflatpricelonglat.xlsx", sheet_name="Sheet1")
+
+   labels = df123['flat_type']
+   labels2= df123['storey_range']
+   values = df123['resale_price']
+
+   # fig = px.pie(df,
+   #       values=values,
+   #       names=names,
+   #       #title='Popular flat type as per resale units sold'
+   #       )
+
+   # fig.update_traces(
+   #       textposition='inside',
+   #       textinfo='percent+label'
+   #       )
+   # # add title
+   # fig.update_layout(title_text='Popular Flat types sold', title_x=0.5)
+
+   fig = go.Figure(data=[go.Pie(labels=labels, values=values, name='Flat type', textinfo='label+percent'),
+                        go.Pie(labels=labels2, values=values, name='Storey range', textinfo='label+percent',visible= False)])
+
+
+   # Add dropdown
+   fig.update_layout(
+      updatemenus=[
+         dict(
+               active=0,
+               buttons=list([
+                  dict(label="Flat type",
+                        method="update",
+                        args=[{"visible": [True, False]},
+                              {"title": "Flat type",
+                              }]),
+                  dict(label="Storey range",
+                        method="update",
+                        args=[{"visible": [False, True]},
+                              {"title": "Storey range",
+                              }]),
+               ]),
+         )
+      ])
+
+   graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+   ################     Graph 2 massive scatter plot colorfk    ################
+
+   df2 = pd.read_excel(os.getcwd() + "/datasets" + "/resaleflatpricelonglat.xlsx", sheet_name="Sheet1")
+   df2['storey_range'] = df2['storey_range'].apply(lambda storey_range:storey_range[:2])
+   df2['storey_range'] = df2['storey_range'].astype(float)
+   fig2 = px.scatter(df2, x="floor_area_sqm", y="resale_price", color="flat_type")
+   
+   # add title
+   fig2.update_layout(title_text='Flat type and Floor area VS resale price', title_x=0.5)
+   
+   graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
+
+   ################     Graph 3 dist plot    ################
+
+   df3 = pd.read_excel(os.getcwd() + "/datasets" +"/resaleflatpricelonglat.xlsx", sheet_name="Sheet1")
+   fig3 = px.histogram(df3, x="resale_price")
+
+   # add title
+   fig3.update_layout(title_text='Distribution of housing prices', title_x=0.5)
+
+   graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+   ################     Graph 4   pink scatter  ################
+
+
+   df4 = pd.read_excel(os.getcwd() + "/datasets" + "/resaleflatpricelonglat.xlsx", sheet_name="Sheet1")
+   fig4 = px.scatter(df4, x="floor_area_sqm", y="resale_price", color_discrete_sequence=['pink'], trendline="ols",trendline_color_override="red")
+
+   # add title
+   fig4.update_layout(title_text='Floor Area vs Resale prices', title_x=0.5, font=dict())
+
+   graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+   # ################     Graph 5   Average price per town  ################
+   # df5 = pd.read_excel(os.getcwd() + "/datasets" + "/resaleflatpricelonglat.xlsx", sheet_name="resaleflatpricelonglat")
+   # average_price=df5.groupby('town')['resale_price'].mean()
+   # df55 = pd.DataFrame(average_price)
+   # fig5 = px.bar(df55, y='resale_price')
+   
+   # # add title
+   # fig5.update_layout(title_text='Average price per area', title_x=0.5, font=dict())
+
+   # graph5JSON = json.dumps(fig5, cls=plotly.utils.PlotlyJSONEncoder)
+
+   ################     Graph 5   Prices over time line graph   ################
+   df11 = pd.read_excel(os.getcwd() + "/datasets" + "/resaleflatpricelonglat.xlsx", sheet_name="Sheet1")
+
+   average_price_lease=df11.groupby('lease_commence_date', as_index=False)['resale_price'].median()
+   df111 = pd.DataFrame(average_price_lease)
+
+   fig5 = px.line(df111, x="lease_commence_date", y="resale_price", title='Prices over time')
+
+   graph5JSON = json.dumps(fig5, cls=plotly.utils.PlotlyJSONEncoder)
+
+   ################     Graph 6 Scatter Mapbox  ################
+   
+   df6 = pd.read_excel(os.getcwd() + "/datasets" + "/resaleflatpricelonglat.xlsx", sheet_name="Sheet1")
+   fig6 = px.scatter_mapbox(df6, lat = "lat", lon = "long", color = "resale_price", color_continuous_scale = px.colors.cyclical.IceFire, 
+            size_max = 20, zoom = 10, mapbox_style = "carto-positron")
+   
+   # add title
+   fig6.update_layout(title_text='Resale price of all flats', title_x=0.5, font=dict())
+
+   graph6JSON = json.dumps(fig6, cls=plotly.utils.PlotlyJSONEncoder)
+   
+   ################     Graph 7 Correlation Matrix  ################
+
+   df7 = pd.read_excel(os.getcwd() + "/datasets" + "/resaleflatpricelonglat.xlsx", sheet_name="Sheet1")
+   corrMatrix = df7.corr()
+   fig7 = go.Figure()
+   fig7.add_trace(go.Heatmap(x = corrMatrix.columns, y = corrMatrix.index, z = np.array(corrMatrix), text=corrMatrix.values,
+            colorscale='Blues',texttemplate='%{text:.2f}'))
+
+    # add title
+   fig7.update_layout(title_text='Resale price of all flats', title_x=0.5, font=dict())
+
+   graph7JSON = json.dumps(fig7, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+   # ################     Graph X Filter     ################
+
+   # np.random.seed(1)
+   # x0 = np.random.normal(2, 0.4, 400)
+   # y0 = np.random.normal(2, 0.4, 400)
+   # x1 = np.random.normal(3, 0.6, 600)
+   # y1 = np.random.normal(6, 0.4, 400)
+   # x2 = np.random.normal(4, 0.2, 200)
+   # y2 = np.random.normal(4, 0.4, 200)
+   # figx = go.Figure()
+
+   # figx.add_trace(
+   #    go.Scatter(
+   #       x=x0,
+   #       y=y0,
+   #       mode="markers",
+   #       marker=dict(color="DarkOrange")
+   #    )
+   # )
+
+   # figx.add_trace(
+   #    go.Scatter(
+   #       x=x1,
+   #       y=y1,
+   #       mode="markers",
+   #       marker=dict(color="Crimson")
+   #    )
+   # )
+
+   # figx.add_trace(
+   #    go.Scatter(
+   #       x=x2,
+   #       y=y2,
+   #       mode="markers",
+   #       marker=dict(color="RebeccaPurple")
+   #    )
+   # )
+
+   # # Add buttons that add shapes
+   # cluster0 = [dict(type="circle",
+   #                            xref="x", yref="y",
+   #                            x0=min(x0), y0=min(y0),
+   #                            x1=max(x0), y1=max(y0),
+   #                            line=dict(color="DarkOrange"))]
+   # cluster1 = [dict(type="circle",
+   #                            xref="x", yref="y",
+   #                            x0=min(x1), y0=min(y1),
+   #                            x1=max(x1), y1=max(y1),
+   #                            line=dict(color="Crimson"))]
+   # cluster2 = [dict(type="circle",
+   #                            xref="x", yref="y",
+   #                            x0=min(x2), y0=min(y2),
+   #                            x1=max(x2), y1=max(y2),
+   #                            line=dict(color="RebeccaPurple"))]
+
+   # figx.update_layout(
+   #    updatemenus=[
+   #       dict(buttons=list([
+   #             dict(label="None",
+   #                method="relayout",
+   #                args=["shapes", []]),
+   #             dict(label="Cluster 0",
+   #                method="relayout",
+   #                args=["shapes", cluster0]),
+   #             dict(label="Cluster 1",
+   #                method="relayout",
+   #                args=["shapes", cluster1]),
+   #             dict(label="Cluster 2",
+   #                method="relayout",
+   #                args=["shapes", cluster2]),
+   #             dict(label="All",
+   #                method="relayout",
+   #                args=["shapes", cluster0 + cluster1 + cluster2])
+   #       ]),
+   #       )
+   #    ]
+   # )
+
+   # # Update remaining layout properties
+   # figx.update_layout(
+   #    title_text="Highlight Clusters",
+   #    showlegend=False,
+   # )
+
+   ################     Graph X Filter     ################
+
+   dfx = pd.read_excel(os.getcwd() + "/datasets" + "/resaleflatpricelonglat.xlsx", sheet_name="Sheet1")
+
+   average_price_town=dfx.groupby('town', as_index=False)['resale_price'].median()
+   average_price_type=dfx.groupby('flat_type', as_index=False)['resale_price'].median()
+
+   df55 = pd.DataFrame(average_price_town)
+   df66 = pd.DataFrame(average_price_type)
+
+   s_town = df55['town'].to_numpy()
+   s_price = df55['resale_price'].to_numpy()
+
+   s_type = df66['flat_type'].to_numpy()
+   s_price2 = df66['resale_price'].to_numpy()
+
+   plotx = go.Figure(data=[go.Bar(
+      name='Town',
+      x=s_town,
+      y=s_price
+   ),
+      go.Bar(
+      name='flat Type',
+      x=s_type,
+      y=s_price2, visible=False
+   )])
+
+
+   # Add dropdown
+   plotx.update_layout(
+      updatemenus=[
+         dict(
+               active=0,
+               buttons=list([
+                  dict(label="Town",
+                        method="update",
+                        args=[{"visible": [True, False]},
+                              {"title": "Town",
+                              }]),
+                  dict(label="Flat Type",
+                        method="update",
+                        args=[{"visible": [False, True]},
+                              {"title": "Flat Type",
+                              }]),
+               ]),
+         )
+      ])
+
+   graphxJSON = json.dumps(plotx, cls=plotly.utils.PlotlyJSONEncoder)
+
+   ################     end of graphs     ################
+   #htmlPath = os.path.join(os.getcwd() + '/views/index.html')
+   #return render_template(htmlPath, graphJSON=graphJSON, graph2JSON=graph2JSON,graphxJSON=graphxJSON,graph3JSON=graph3JSON,graph4JSON=graph4JSON,graph5JSON=graph5JSON)
+   return render_template('index.html', graphJSON=graphJSON, graph2JSON=graph2JSON, 
+   graphxJSON=graphxJSON,graph3JSON=graph3JSON,
+   graph4JSON=graph4JSON,graph5JSON=graph5JSON,
+   graph6JSON=graph6JSON, graph7JSON=graph7JSON)
+
+
+@app.route('/datasets')
+
+# def view_data_page():
+#    #file = 'C:\\xampp\\htdocs\\T13\\py_proj\\data_files\\export.xlsx'
+   
+#    file = os.path.join(os.getcwd() + '/datasets/resaleflatpricelonglat.xlsx')
+#    df = newDf(file)
+#    df = pd.read_excel(file)
+#    dfCol = []
+#    dfCol = df.columns.ravel()
+#    #colNames = []
+#    #colID = []
+#    colData = []
+#    for c in dfCol:
+#       newCol = str(c)
+#       colID = newCol
+#       colName = newCol.replace("_", " ")
+#       colName = colName.title()
+#       colDict = {id: colID, 'name': colName}
+#       colData.append(colDict)
+      
+   
+#    return render_template('view_data.html', tables=[df.to_dict('records')], titles=colData)
+#    #df = pd.read_excel(os.getcwd() + "/datasets" + "/resaleflatprice_140922.xlsx", sheet_name="resale-flat-prices-based-on-reg")
+
+def view_data_page():
+   results = []
+   #f = open ('/Users/hid/Desktop/resale-flat-prices-based-on-registration-date-from-jan-2017-onwards.csv', 'r')
+   f = open (os.getcwd() + "/datasets" + "/resaleflatpricelonglat.csv", 'r')
+   with f:
+      reader = csv.DictReader(f)
+        
+      for row in reader:
+         results.append(dict(row))
+
+            
+      fieldnames = [key for key in results[0].keys()]
+
+      return render_template('viewtable.html', results=results, fieldnames=fieldnames, len=len)
+
+# if __name__ == '__main__':
+#     app.run(debug=False)
+
+app.run()
+
+
+

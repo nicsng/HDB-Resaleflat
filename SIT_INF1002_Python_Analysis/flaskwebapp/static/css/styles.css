@@ -1,0 +1,214 @@
+.body{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Inter', sans-serif;
+}
+
+.pagecontainer{
+    width: 100vw;
+    margin: 0;
+}
+
+.header-container{
+    display: flex;
+    width: 100vw;
+    background-color: #ff1b1b;
+    height: auto;
+    align-items: center;
+    
+}
+
+.navdiv{
+    display: flex;
+    padding: 1rem;
+    padding-left: 2rem;
+    align-items: center;
+}
+
+.header-title-div{
+    height: 100%;
+    align-items: center;
+    display: flex;
+}
+
+.header-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.header-title{
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+    height: 100%;
+    margin: 0;
+}
+
+
+.tab-section{
+    display: flex;
+    font-size: 1.3rem;
+    padding-left: 2rem;
+}
+
+.home-tab-container{
+
+}
+
+.home-btn-div{
+
+}
+
+.home-tab{
+    color: white;
+}
+
+.viewds-tab-container, .custom-tab-container{
+    padding-left: 2rem;
+}
+
+.viewds-btn-div{
+
+}
+
+.viewds-tab, .customtab{
+    color: white;
+}
+
+.body-container{
+    display: flex;
+    justify-content: center;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    width: 100vw;
+}
+
+.body-div{
+
+}
+
+.body-top-div{
+
+}
+
+.body-title-div{
+
+}
+
+.body-title{
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: black;
+}
+
+.body-subtitle-div{
+    padding-top: 1rem;
+}
+
+.body-subtitle{
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: black;
+}
+
+.body-graph-section{
+    padding-top: 3rem;
+}
+
+.graph-title-div{
+    padding-bottom: 2rem;
+}
+
+.graph-title{
+    font-size: 2rem;
+    font-weight: 600;
+    color: black;
+}
+
+.graphsfilter-div{
+
+}
+
+.graphsbody-container{
+
+}
+
+.graphsbody-div{
+
+}
+
+.graphbodydiv{
+    padding-bottom: 2rem;
+}
+
+.chartdiv{
+
+}
+
+.chart{
+
+}
+
+.charttxtdiv{
+    padding-top: 1.5rem;
+}
+
+.charttxt{
+    font-size: 1.2rem;
+    color: black;
+}
+
+.chartspan{
+    font-weight: 700;
+}
+
+/*Loading Modal Pop Up*/
+
+.loadingmodaldiv{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    z-index: 1;
+    overflow: auto;
+}
+
+.loadingmodal{
+    justify-content: center;
+    padding-top: 10rem;
+    display: flex;
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.modal-body{
+    background-color: white;
+    margin: auto;
+    position: relative;
+    border-radius: 1rem;
+    padding: 3rem;
+    padding-top: 2rem;
+}
+
+
+.modal-titlediv{
+    display: flex;
+    justify-content: center;
+}
+
+.loadingtitle{
+    font-weight: 600;
+    font-size: 2rem;
+}
+
+.loadingspinnerdiv{
+    justify-content: center;
+    display: flex;
+}

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>View Graph Charts</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css" />
+        <script defer="" src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&amp;display=swap" rel="stylesheet" />
+        <link type="text/css" href="{{ url_for('static',filename='css/styles.css') }}" rel="stylesheet" />
+        <script src="{{ url_for('static',filename='js/script.js') }}"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+        
+    </head>
+    
+    <body>
+        <div class="pagecontainer">
+            <div class="header-container">
+                <div class="navdiv">
+                    <div class="header-title-div">
+                        <div class="header-div">
+                            <p class="header-title">GUI</p>
+                        </div>
+                    </div>
+                    <div class="tab-section">
+
+                        <div class="home-tab-container">
+                            <div class="home-btn-div">
+                                <a href="/" class="home-tab">
+                                    Home
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="viewds-tab-container">
+                            <div class="viewds-btn-div">
+                                <a href="datasets" class="viewds-tab">
+                                    View Datasets
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="custom-tab-container">
+                            <div class="custom-btn-div">
+                                <a href="custom" class="customtab">
+                                    Custom Table
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="body-container">
+                <div class="body-div">
+                    <div class="body-top-div">
+                        <div class="body-title-div">
+                            <p class="body-title">Data Analysis of Prices of HDB Resale Flats</p>
+                        </div>
+                        <div class="body-subtitle-div">
+                            <p class="body-subtitle">
+                                This page shows various data analysis made on datasets related to HDB Resale Flats. These data analytics will be represented in various forms of graphs below.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="body-graph-section">
+                        <div class="graph-title-div">
+                            <p class="graph-title">
+                                Data Analysis Graphs
+                            </p>
+                        </div>
+                        <div class="graphsfilter-div">
+                            <div class="filterdiv">
+                                
+                            </div>
+                        </div>
+                        <div class="graphsbody-container">
+                            <div class="graphsbody-div">
+
+                                <div class="graphbodydiv" id="graphone">
+                                    
+                                    <div class="chartdiv">
+                                        <div class="chart" id="chart">
+                                        </div>
+                                    </div>
+
+                                    <div class="charttxtdiv">
+
+                                        <div class="chartdescdiv">
+                                            <p class="chartdesc">
+                                                <span class="chartspan">Description: </span>Popular storey range and flat types by the resale units sold
+                                            </p>
+
+                                            <p class="chartdesc">
+                                                Middle-range storey levels from fourth storey to the sixth storey are popular resale units per unit sold.
+                                            </p>
+
+                                            <p class="chartdesc">
+                                                Four-room resale flats are also the most appealing as per resale units sold.
+
+                                            <p class="chartdesc">
+                                                Drop-down feature to select ‘Storey range’ or ‘Flat Type’
+                                            </p>
+                                        </div>
+
+                                        <div class="chartfiltdiv">
+                                            <p class="chartfilt">
+                                                <span class="chartspan">Data Filter: </span>Resale hdb flat sold(count) and flat_type and storey_range
+                                            </p>
+                                        </div>
+
+                                        <div class="chartformatdiv">
+                                            <p class="chartformat">
+                                                <span class="chartspan">Format: </span>Pie Chart
+                                            </p>
+                                        </div>
+
+                                        <div class="chartremarkdiv">
+                                            <p class="chartremark">
+                                                <span class="chartspan">Remarks: </span>Created a data filter to count all hdb flats sold for each variable. 
+                                            </p>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                                <div class="graphbodydiv" id="graphtwo">
+
+                                    <div class="chartdiv">
+                                        <div class="chart" id="chart2">
+                                        </div>
+                                    </div>
+        
+
+                                    <div class="charttxtdiv">
+
+                                        <div class="chartdescdiv">
+                                            <p class="chartdesc">
+                                                <span class="chartspan">Description: </span>Correlation between flat types/floor area and the resale price.
+                                            </p>
+
+                                            <p class="chartdesc">
+                                                Larger flats and flat types tend to fetch a higher resale price.
+                                            </p>
+
+                            
+                                        </div>
+
+                                        <div class="chartfiltdiv">
+                                            <p class="chartfilt">
+                                                <span class="chartspan">Data Filter: </span>flat_type and floor_area_sqm with resale_price
+                                            </p>
+                                        </div>
+
+                                        <div class="chartformatdiv">
+                                            <p class="chartformat">
+                                                <span class="chartspan">Format: </span>Scatter Plot
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="graphbodydiv" id="graphfour">
+
+                                    <div class="chartdiv">
+                                        <div class="chart" id="chart4">
+                                        
+                                        </div>
+                                    </div>
+
+                                    <div class="charttxtdiv">
+
+                                        <div class="chartdescdiv">
+                                            <p class="chartdesc">
+                                                <span class="chartspan">Description: </span>Correlation between floor area and the resale price.
+                                            </p>
+
+                                            <p class="chartdesc">
+                                                Larger flats tend to fetch a higher resale price.
+                                            </p>
+
+                                        </div>
+
+                                        <div class="chartfiltdiv">
+                                            <p class="chartfilt">
+                                                <span class="chartspan">Data Filter: </span>floor_area_sqm with resale_price
+                                            </p>
+                                        </div>
+
+                                        <div class="chartformatdiv">
+                                            <p class="chartformat">
+                                                <span class="chartspan">Format: </span>Scatter Plot
+                                            </p>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                                <div class="graphbodydiv" id="graphthree">
+
+                                    <div class="chartdiv">
+                                        <div class="chart" id="chart3">
+                                        
+                                        </div>
+                                    </div>
+
+                                    <div class="charttxtdiv">
+
+                                        <div class="chartdescdiv">
+                                            <p class="chartdesc">
+                                                <span class="chartspan">Description: </span>Analysis of prediction feature in terms of accuracy.
+
+                                            <p class="chartdesc">
+                                                Data is positively skewed, meaning that it has a higher number of data points having low values.
+                                            </p>
+
+                                            <p class="chartdesc">
+                                                Perform better at predicting the resale price of flats' lower resale value as compared to those with very high resale value.
+                                            </p>
+
+                                        </div>
+
+                                        <div class="chartfiltdiv">
+                                            <p class="chartfilt">
+                                                <span class="chartspan">Data Filter: </span>Resale prices and Resale hdb flat sold(count)
+                                                Format: 
+                                            </p>
+                                        </div>
+
+                                        <div class="chartformatdiv">
+                                            <p class="chartformat">
+                                                <span class="chartspan">Format: </span>Distribution Plot
+                                            </p>
+                                        </div>
+
+                                        <div class="chartremarkdiv">
+                                            <p class="chartremark">
+                                                <span class="chartspan">Remarks: </span>Created a data filter to count all hdb flats sold for each variable.
+                                            </p>
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="graphbodydiv" id="graphx">
+
+                                    <div class="chartdiv">
+                                        <div class="chart" id="chartx">
+                                        
+                                        </div>
+                                    </div>
+
+                                    <div class="charttxtdiv">
+
+                                        <div class="chartdescdiv">
+                                            <p class="chartdesc">
+                                                <span class="chartspan">Description: </span>Average prices of Locations and Flat Types.
+
+                                            <p class="chartdesc">
+                                                Flats in the Central area and Bukit Timah would generally have a higher resale price compared to areas such as Yishun. 
+                                            </p>
+
+                                            <p class="chartdesc">
+                                                The median price for each flat type, eg. a 5-room resale flat is on average $475,000.
+                                            </p>
+
+                                            <p class="chartdesc">
+                                                Drop down feature to select ‘Town’ or ‘Flat Type’
+                                            </p>
+
+                                        </div>
+
+                                        <div class="chartfiltdiv">
+                                            <p class="chartfilt">
+                                                <span class="chartspan">Data Filter: </span> town and flat_type with Resale hdb price(Average)
+                                            </p>
+                                        </div>
+
+                                        <div class="chartformatdiv">
+                                            <p class="chartformat">
+                                                <span class="chartspan">Format: </span>Bar Chart
+                                            </p>
+                                        </div>
+
+                                        <div class="chartremarkdiv">
+                                            <p class="chartremark">
+                                                <span class="chartspan">Remarks: </span>Created a data filter to find the average hdb resale price in each variable. 
+                                            </p>
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+
+                                
+                                <div class="graphbodydiv" id="graphfive">
+
+                                    <div class="chartdiv">
+                                        <div class="chart" id="chart5">
+                                        
+                                        </div>
+                                    </div>
+
+                                    <div class="charttxtdiv">
+
+                                        <div class="chartdescdiv">
+                                            <p class="chartdesc">
+                                                <span class="chartspan">Description: </span>Pricing Analysis of HDB resale to remaining leases.
+                                            </p>
+
+                                            <p class="chartdesc">
+                                                Higher the remaining lease, the higher the price.
+                                            </p>
+
+                                            <p class="chartdesc">
+                                                Drop down feature to select ‘Median’, ‘Mean’, ‘Min’, ‘Max’ or ‘All’
+                                            </p>
+
+                                        </div>
+
+                                        <div class="chartfiltdiv">
+                                            <p class="chartfilt">
+                                                <span class="chartspan">Data Filter: </span>Resale hdb flat sold(count) and flat_type and storey_range
+                                            </p>
+                                        </div>
+
+                                        <div class="chartformatdiv">
+                                            <p class="chartformat">
+                                                <span class="chartspan">Format: </span>Line Graph
+                                            </p>
+                                        </div>
+
+                                        <div class="chartremarkdiv">
+                                            <p class="chartremark">
+                                                <span class="chartspan">Remarks: </span>Created a data filter to find the mean, median, max, and min price of hdb resale price for each variable.
+                                            </p>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="graphbodydiv" id="graphsix">
+
+                                    <div class="chartdiv">
+                                        <div class="chart" id="chart6">
+                                        
+                                        </div>
+                                    </div>
+
+                                    <div class="charttxtdiv">
+
+                                        <div class="chartdescdiv">
+                                            <p class="chartdesc">
+                                                <span class="chartspan">Description: </span>Resale hdb sold per month in years.
+                                            </p>
+
+                                            <p class="chartdesc">
+                                                Houses sold were at the least during April and May 2020, due to the economic crash from the covid-19 pandemic outbreak. Recovery and demand for hdb continue to rise since.
+                                            </p>
+                                        </div>
+
+                                        <div class="chartfiltdiv">
+                                            <p class="chartfilt">
+                                                <span class="chartspan">Data Filter: </span>month and Resale hdb flat sold(count)
+                                            </p>
+                                        </div>
+
+                                        <div class="chartformatdiv">
+                                            <p class="chartformat">
+                                                <span class="chartspan">Format: </span>Histogram
+                                            </p>
+                                        </div>
+
+                                        <div class="chartremarkdiv">
+                                            <p class="chartremark">
+                                                <span class="chartspan">Remarks: </span>Created a data filter to count all hdb flats sold for each variable. 
+                                            </p>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="graphbodydiv" id="graphseven">
+
+                                    <div class="chartdiv">
+                                        <div class="chart" id="chart7">
+                                        
+                                        </div>
+                                    </div>
+
+                                    <div class="charttxtdiv">
+
+                                        <div class="chartdescdiv">
+                                            <p class="chartdesc">
+                                                <span class="chartspan">Description: </span> Correlation coefficients between the different variables.
+                                            </p>
+
+                                            <p class="chartdesc">
+                                                Flat_Type and floor_area_sqm have a high pair correlation of 0.95. Expected as the more rooms you have, the more floor area
+                                            </p>
+
+                                        </div>
+
+                                        <div class="chartfiltdiv">
+                                            <p class="chartfilt">
+                                                <span class="chartspan">Data Filter: </span>resale_price, floor_area_sqm and flat_type, followed by storey_range, lease_commence_date, and remaining_lease
+                                            </p>
+                                        </div>
+
+                                        <div class="chartformatdiv">
+                                            <p class="chartformat">
+                                                <span class="chartspan">Format: </span>Correlation Matrix 
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                
+                                <div class="graphbodydiv" id="graphmap">
+
+                                    <div class="chartdiv">
+                                        <div class="chart" id="chartmap">
+                                        
+                                        </div>
+                                    </div>
+
+                                    <div class="charttxtdiv">
+
+                                        <div class="chartdescdiv">
+                                            <p class="chartdesc">
+                                                <span class="chartspan">Description: </span>Heatmap of Resale Price of All Flats
+                                            </p>
+
+                                            <p class="chartdesc">
+                                                This map displays the various prices of the HDB flats by putting a coloured dot on the map using the coordinates, longitude and latitude.
+                                            </p>
+
+                                            <p class="chartdesc">
+                                                The colour of the dot will depend on the specific flat's price. For example, a yellow dot would represent a higher price compared to a blue dot.
+                                            </p>
+
+                                        </div>
+
+                                        <div class="chartfiltdiv">
+                                            <p class="chartfilt">
+                                                <span class="chartspan">Data Variables: </span>resale_price, lat and long
+                                            </p>
+                                        </div>
+
+                                        <div class="chartformatdiv">
+                                            <p class="chartformat">
+                                                <span class="chartspan">Format: </span>Heatmap
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="loadingmodaldiv" id="loadingPopUp">
+            <div class="loadingmodal" id="loadingModal">
+                <div class="modal-body">
+                    <!-- <div class="modal-closediv">
+                        <span class="modalclose">
+                            &times;
+                        </span>
+                    </div> -->
+                    <div class="modal-titlediv">
+                        <p class="loadingtitle">
+                            Loading
+                        </p>
+                    </div>
+                    <div class="loadingspinnerdiv">
+                        <div class="spinner-border">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type='text/javascript'>
+
+        function plotGraphs(){
+            var config = {responsive: true}
+            var graphs = {{graphJSON | safe}};
+            Plotly.plot('chart',graphs,{}, {responsive: true});
+      
+            var graph2 = {{graph2JSON | safe}};
+            Plotly.plot('chart2',graph2,{}, {responsive: true});
+      
+            var graph3 = {{graph3JSON | safe}};
+            Plotly.plot('chart3',graph3,{}, {responsive: true});
+        
+            var graphx = {{graphxJSON | safe}};
+            Plotly.plot('chartx',graphx,{}, {responsive: true});
+        
+            var graph4 = {{graph4JSON | safe}};
+            Plotly.plot('chart4',graph4,{}, {responsive: true});
+        
+            var graph5 = {{graph5JSON | safe}};
+            Plotly.plot('chart5',graph5,{}, {responsive: true});
+
+            var graph6 = {{graph6JSON | safe}};
+            Plotly.plot('chart6',graph6,{}, {responsive: true});
+
+            var graph7 = {{graph7JSON | safe}};
+            Plotly.plot('chart7',graph7,{}, {responsive: true});
+
+            var graphmap = {{graphmapJSON | safe}};
+            Plotly.plot('chartmap',graphmap,{}, {responsive: true});
+        
+            return true;
+        }
+
+        async function loading(){
+            loadingmodal = document.getElementById("loadingPopUp");
+            flag = await plotGraphs()
+            if(flag){
+                loadingmodal.style.display = "none";
+            }
+        }
+
+        loading()
+
+    </script>
+</html>
